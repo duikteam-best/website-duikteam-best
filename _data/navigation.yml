@@ -1,0 +1,19 @@
+# main links
+main:
+  - title: "Over ons"
+    url: /over-ons/
+  - title: "Duikopleidingen"
+    url: /duikopleidingen/
+  - title: "Duiken"
+    url: /dives/    
+  - title: "Lid worden"
+    url: /lid-worden/"
+  - title: "Sample Posts"  
+    url: /year-archive/
+  - title: "Sample Collections"
+    url: /collection-archive/
+  - title: "Terms &amp; Privacy Policy"
+    url: /terms/
+  - title: "Quick-Start Guide"
+    url: /docs/quick-start-guide/    
+

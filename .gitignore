@@ -1,0 +1,28 @@
+.DS_Store
+
+# Jekyll build and caches
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+.asset-cache
+.jekyll-assets-cache/
+
+# Bundler / Ruby
+.bundle/
+vendor/
+
+# Node / tooling
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temp / logs
+*.log
+tmp/
+log/
+
+# Other
+.env
+dist/
