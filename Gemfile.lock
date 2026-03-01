@@ -197,6 +197,7 @@ DEPENDENCIES
   jekyll-sitemap
   minimal-mistakes-jekyll
   public_suffix (~> 6.0)
+  sass-embedded (~> 1.96)
   tzinfo (>= 1, < 3)
   tzinfo-data
   wdm (~> 0.1)
