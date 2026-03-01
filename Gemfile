@@ -1,7 +1,11 @@
 source "https://rubygems.org"
 
+# Pin Zeitwerk below 2.7 so it doesn't require Ruby >= 3.2
+gem "zeitwerk", "< 2.7"
+gem "webrick"
 
-# If you want to use GitHub Pages, remove the "gem "jekyll"" above and
+
+# If you want to use GitHub Pages
 # uncomment the line below. To upgrade, run `bundle update github-pages`.
 gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!

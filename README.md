@@ -2,7 +2,7 @@
 This is the website of Duikteam-Best - a scuba dive club
 
 ## Installation - Getting started
-- Run `brew install ruby` to install Ruby
+- Run `brew install ruby@3.1` to install Ruby
 - Run `gem install bundler jekyll` to install Jekyll bundler
 - Run `bundle install` to install all required dependencies
 
