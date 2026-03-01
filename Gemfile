@@ -37,3 +37,6 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 # install minimal mistakes theme
 gem "minimal-mistakes-jekyll"
+
+# public_suffix 7.x requires Ruby >= 3.2; constrain to 6.x for GitHub Actions Ruby 3.1
+gem "public_suffix", "~> 6.0"
