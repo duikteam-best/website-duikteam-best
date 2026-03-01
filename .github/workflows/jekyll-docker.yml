@@ -13,8 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build the site in the jekyll/builder container
+    - name: Build the site in ruby:3.2-slim Docker
       run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && gem install bundler -v '4.0.7' && bundle _4.0.7_ install --jobs 4 --retry 3 && jekyll build --future"
+        docker run --rm \
+          -v ${{ github.workspace }}:/srv/jekyll \
+          -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
+          -w /srv/jekyll \
+          ruby:3.2-slim bash -lc "set -euo pipefail; apt-get update && apt-get install -y build-essential libssl-dev zlib1g-dev libxml2-dev libxslt1-dev pkg-config && gem update --system || true && gem install bundler -v '4.0.7' && bundle _4.0.7_ config set path vendor/bundle && bundle _4.0.7_ install --jobs 4 --retry 3 && bundle _4.0.7_ exec jekyll build --future --destination _site"
