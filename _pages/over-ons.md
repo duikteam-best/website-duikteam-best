@@ -24,7 +24,6 @@ Duikteam Best is een duikvereniging met ongeveer 40 leden variërend van 15 tot 
 We trainen elke woensdagavond in ZIB Zwemcentrum Best.
 Het is voor ons belangrijk dat duiken veilig gebeurt, maar tegelijk ook leuk moet zijn. Hoe realiseren we dit? Veilig, doordat we opleidingen geven volgens de normen van de Nederlandse Onderwatersport Bond. Leuk, doordat we een divers team hebben, die zwembadtrainingen geeft, activiteiten verzorgt en de opleidingen geeft.
 
-Logo Duikteam Best
 Bij ons kom je met ieder duikniveau aan je trekken!
 
 Als duikclub organiseren we regelmatig verenigingsduiken, maar naast duikactiviteiten organiseren we ook  niet-duik-activiteiten. Jaarlijks staan er bijvoorbeeld twee Zeeland-weekenden, de nieuwjaarsduik en een barbecue op de agenda. De leden krijgen de gelegenheid en de vrijheid zelf deze activiteiten te organiseren.

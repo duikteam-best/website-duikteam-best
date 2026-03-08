@@ -27,3 +27,31 @@ collections:
           - { label: 'Title', name: 'title', widget: 'hidden', default: 'home' }
           - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'home' }
           - { label: 'Body', name: 'body', widget: 'markdown' }
+      - label: 'Over Ons'
+        name: 'OverOns'
+        file: '_pages/over-ons.md'
+        fields:
+          - { label: 'Title', name: 'title', widget: 'hidden', default: 'over-ons' }
+          - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'page' }
+          - { label: 'Body', name: 'body', widget: 'markdown' }
+      - label: 'Duikopleidingen'
+        name: 'Duikopleidingen'
+        file: '_pages/duikopleidingen.md'
+        fields:
+          - { label: 'Title', name: 'title', widget: 'hidden', default: 'duikopleidingen' }
+          - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'page' }
+          - { label: 'Body', name: 'body', widget: 'markdown' }
+      - label: 'Lid Worden'
+        name: 'LidWorden'
+        file: '_pages/lid-worden.md'
+        fields:
+          - { label: 'Title', name: 'title', widget: 'hidden', default: 'lid-worden' }
+          - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'page' }
+          - { label: 'Body', name: 'body', widget: 'markdown' }
+      - label: 'Terms & Privacy Policy'
+        name: 'TermsPrivacy'
+        file: '_pages/terms.md'
+        fields:
+          - { label: 'Title', name: 'title', widget: 'hidden', default: 'terms' }
+          - { label: 'Layout', name: 'layout', widget: 'hidden', default: 'page' }
+          - { label: 'Body', name: 'body', widget: 'markdown' }
