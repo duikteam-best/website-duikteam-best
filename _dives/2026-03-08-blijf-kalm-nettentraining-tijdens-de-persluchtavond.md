@@ -4,7 +4,6 @@ date: 2026-02-14T10:20:00
 gallery:
   - /assets/uploads/IMG_1713.jpeg
   - /assets/uploads/100_0006-2.jpg
-layout: post
 ---
 
 Tijdens een recente persluchttraining zag het zwembad er allesbehalve vertrouwd uit. Geen strakke banen, maar netten, lijnen en een kluwen touw van verschillende diktes. Het leek alsof een stuk Oosterschelde of Grevelingen tijdelijk naar binnen was gehaald.
