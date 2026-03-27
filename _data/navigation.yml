@@ -1,11 +1,11 @@
 # main links
 main:
-  - title: "Over ons"
-    url: /over-ons/
   - title: "Opleidingen"
     url: /opleidingen/
   - title: "Duiken"
     url: /duiklogs/
+  - title: "Over ons"
+    url: /over-ons/
   - title: "Lid worden"
     url: /lid-worden/"
   - title: "Sample Posts"  
@@ -15,5 +15,5 @@ main:
   - title: "Terms &amp; Privacy Policy"
     url: /terms/
   - title: "Quick-Start Guide"
-    url: /docs/quick-start-guide/    
+    url: /docs/quick-start-guide/
 

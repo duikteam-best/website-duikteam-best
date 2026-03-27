@@ -89,6 +89,32 @@ async function fetchHomePage() {
   return item;
 }
 
+async function fetchAboutUs() {
+  const query = `*[_id == "about-us"][0]`;
+  const url = `https://${projectId}.api.sanity.io/v2023-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  const json = await res.json();
+  const item = json.result;
+  if (!item) {
+    console.log('⚠️  No about-us document found in Sanity');
+    return null;
+  }
+  if (item.heroImage) {
+    item.heroImageUrl = getImageUrl(item.heroImage);
+  }
+  if (item.body) {
+    item.bodyHTML = toHTML(item.body, {
+      block: (props) => `<p>${props.children.join('')}</p>`,
+      marks: {
+        strong: (text) => `<strong>${text}</strong>`,
+        em: (text) => `<em>${text}</em>`,
+        code: (text) => `<code>${text}</code>`
+      }
+    });
+  }
+  return item;
+}
+
 async function fetchCertificationsOverview() {
   const query = `*[_id == "certifications"][0]`;
   const url = `https://${projectId}.api.sanity.io/v2023-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
@@ -148,6 +174,12 @@ async function main() {
   if (homePage) {
     fs.writeFileSync('_data/home_page.json', JSON.stringify(homePage, null, 2));
     console.log('✅ Fetched homePage singleton from Sanity!');
+  }
+
+  const aboutUs = await fetchAboutUs();
+  if (aboutUs) {
+    fs.writeFileSync('_data/about_us.json', JSON.stringify(aboutUs, null, 2));
+    console.log('✅ Fetched about-us singleton from Sanity!');
   }
 
   const certificationsOverview = await fetchCertificationsOverview();

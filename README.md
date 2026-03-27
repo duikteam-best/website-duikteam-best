@@ -9,3 +9,9 @@ This is the website of Duikteam-Best - a scuba dive club
 
 - Build and run using: `bundle exec jekyll serve`
 - Open the website at: `http://127.0.0.1:4000`
+
+- Content is edited here:
+https://www.sanity.io/@ou9P5mkvH/studio/i0yqmtnuplir8xt5qlxnkerd/default/structure
+
+- Published to github pages:
+https://duikteam-best.github.io/

@@ -2,9 +2,9 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
-import {HomeIcon, StarIcon, StarFilledIcon} from '@sanity/icons'
+import {HomeIcon, StarIcon, StarFilledIcon, InfoOutlineIcon} from '@sanity/icons'
 
-const singletonTypes = new Set(['homePage', 'certifications', 'certification'])
+const singletonTypes = new Set(['homePage', 'aboutUs', 'certifications', 'certification'])
 
 export default defineConfig({
   name: 'default',
@@ -28,6 +28,16 @@ export default defineConfig({
                   .schemaType('homePage')
                   .documentId('homePage')
                   .title('Home Page'),
+              ),
+            S.listItem()
+              .title('Over Ons')
+              .id('aboutUs')
+              .icon(InfoOutlineIcon)
+              .child(
+                S.document()
+                  .schemaType('aboutUs')
+                  .documentId('about-us')
+                  .title('Over Ons'),
               ),
             S.listItem()
               .title('Opleidingen')
