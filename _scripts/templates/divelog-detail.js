@@ -48,9 +48,12 @@ ${galleryPhotos.map((p, i) => `  <figure class="divelog-detail__gallery-item" da
   const galleryScript = galleryPhotos.length > 0
     ? `<script>
 (function() {
+  // Move lightbox to <body> to escape any stacking context from page wrappers
+  var lb = document.getElementById('diveLightbox');
+  document.body.appendChild(lb);
+
   var photos = ${JSON.stringify(galleryPhotos.map(p => ({ url: p.url, alt: p.alt || title, caption: p.caption || '' })))};
   var current = 0;
-  var lb = document.getElementById('diveLightbox');
   var lbImg = document.getElementById('lightboxImg');
   var lbCaption = document.getElementById('lightboxCaption');
   var lbCounter = document.getElementById('lightboxCounter');
