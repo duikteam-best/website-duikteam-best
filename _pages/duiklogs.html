@@ -32,9 +32,9 @@ classes: wide
           </div>
         {% endif %}
 
-        {% if dive.description %}
+        {% if dive.descriptionHTML %}
           <div class="dive-description">
-            {{ dive.description | markdownify }}
+            {{ dive.descriptionHTML | raw }}
           </div>
         {% endif %}
       </div>
