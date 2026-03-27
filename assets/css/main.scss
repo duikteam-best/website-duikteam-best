@@ -7,3 +7,55 @@ $doc-font-size: 14;
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+// Body-image: block-level images inserted via Portable Text
+.body-image {
+  margin: 1.5rem 0;
+
+  img {
+    height: auto;
+    border-radius: 6px;
+    display: block;
+  }
+
+  figcaption {
+    font-size: 0.82rem;
+    color: #666;
+    margin-top: 0.35rem;
+    text-align: center;
+  }
+
+  &--center img {
+    width: 100%;
+  }
+
+  &--right {
+    float: right;
+    margin: 0 0 1rem 1.75rem;
+    max-width: 45%;
+    figcaption { text-align: left; }
+  }
+
+  &--left {
+    float: left;
+    margin: 0 1.75rem 1rem 0;
+    max-width: 45%;
+    figcaption { text-align: left; }
+  }
+}
+
+// Clearfix for pages that use floated body images
+.page__content::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 600px) {
+  .body-image--right,
+  .body-image--left {
+    float: none;
+    max-width: 100%;
+    margin: 1.5rem 0;
+  }
+}

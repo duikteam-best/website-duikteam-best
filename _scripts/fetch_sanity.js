@@ -30,7 +30,9 @@ function portableTextToHTML(blocks) {
           if (!url) return '';
           const alt = value.alt || '';
           const caption = value.caption || '';
-          return `<figure class="body-image">
+          const alignment = value.alignment || 'center';
+          const cls = `body-image body-image--${alignment}`;
+          return `<figure class="${cls}">
   <img src="${url}" alt="${alt}" loading="lazy">
   ${caption ? `<figcaption>${caption}</figcaption>` : ''}
 </figure>`;

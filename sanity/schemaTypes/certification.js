@@ -14,6 +14,11 @@ export default {
       { type: 'image', options: { hotspot: true }, fields: [
         { name: 'caption', type: 'string', title: 'Bijschrift' },
         { name: 'alt', type: 'string', title: 'Alternatieve tekst' },
+        { name: 'alignment', type: 'string', title: 'Uitlijning', options: { list: [
+          { title: 'Volledig breed', value: 'center' },
+          { title: 'Rechts uitgelijnd', value: 'right' },
+          { title: 'Links uitgelijnd', value: 'left' },
+        ], layout: 'radio' }, initialValue: 'center' },
       ]},
     ]},
     { name: 'image', type: 'image', title: 'Afbeelding', options: { hotspot: true } },
