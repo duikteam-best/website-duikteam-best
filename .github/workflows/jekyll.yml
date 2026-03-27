@@ -33,15 +33,15 @@ jobs:
         with:
           node-version: '22' # matches Sanity requirements
 
-      - name: Install Sanity fetch dependencies
-        run: npm install node-fetch @portabletext/to-html
-
       - name: Setup Pages
-        id: pages`
+        id: pages
         uses: actions/configure-pages@v5
 
       - name: Install Node dependencies
         run: npm install node-fetch
+
+      - name: Install Sanity fetch dependencies
+        run: npm install node-fetch @portabletext/to-html
 
       - name: Fetch Sanity content with galleries
         run: node _scripts/fetch_sanity.js
