@@ -2,6 +2,8 @@
 import fs from 'fs';
 import { toHTML } from '@portabletext/to-html';
 import fetch from 'node-fetch';
+import { renderDivelogDetail } from './templates/divelog-detail.js';
+import { renderCertificationDetail } from './templates/certification-detail.js';
 
 const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET;
@@ -212,10 +214,6 @@ async function fetchCertifications() {
   });
 }
 
-function escapeYaml(str) {
-  return (str || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-}
-
 async function main() {
   const divelogsOverview = await fetchDivelogsOverview();
   if (divelogsOverview) {
@@ -230,92 +228,8 @@ async function main() {
   // Generate individual dive log detail pages
   fs.mkdirSync('_divelogs', { recursive: true });
   for (const dive of dives) {
-    const slug = dive.slug?.current || dive._id;
-    const title = dive.title || 'Duiklog';
-    const dateStr = dive.date ? new Date(dive.date).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-    const teaserUrl = dive.photos?.[0]?.url || null;
-    const headerImageHtml = teaserUrl
-      ? `<img src="${teaserUrl}" alt="${title}" class="divelog-detail__hero">`
-      : '';
-    const metaHtml = [
-      dateStr ? `<span class="divelog-detail__date"><i class="fas fa-calendar-alt"></i> ${dateStr}</span>` : '',
-      dive.location ? `<span class="divelog-detail__location"><i class="fas fa-map-marker-alt"></i> ${dive.location}</span>` : ''
-    ].filter(Boolean).join('\n      ');
-    const descHtml = dive.descriptionHTML || '';
-    const galleryHtml = dive.photos && dive.photos.length > 0
-      ? `<div class="divelog-detail__gallery">\n${dive.photos.map(p =>
-          `      <figure class="divelog-detail__gallery-item">\n        <img src="${p.url}" alt="${p.alt || title}">\n        ${p.caption ? `<figcaption>${p.caption}</figcaption>` : ''}\n      </figure>`
-        ).join('\n')}\n    </div>`
-      : '';
-
-    const fileContent = `---
-layout: single
-title: "${escapeYaml(title)}"
-author_profile: false
----
-
-<div class="divelog-detail">
-  ${headerImageHtml}
-
-  <div class="divelog-detail__meta">
-    ${metaHtml}
-  </div>
-
-  <div class="divelog-detail__body">
-    ${descHtml}
-  </div>
-
-  ${galleryHtml}
-
-  <a href="/duiklogs/" class="btn btn--inverse">&larr; Terug naar duiklogs</a>
-</div>
-
-<style>
-.divelog-detail__hero {
-  width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-}
-.divelog-detail__meta {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  color: #555;
-}
-.divelog-detail__meta span {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.divelog-detail__body p {
-  line-height: 1.7;
-}
-.divelog-detail__gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 0.75rem;
-  margin: 2rem 0;
-}
-.divelog-detail__gallery-item img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 6px;
-  display: block;
-}
-.divelog-detail__gallery-item figcaption {
-  font-size: 0.82rem;
-  text-align: center;
-  margin-top: 0.3rem;
-  color: #666;
-}
-</style>
-`;
-    fs.writeFileSync(`_divelogs/${slug}.html`, fileContent);
+    const { slug, content } = renderDivelogDetail(dive);
+    fs.writeFileSync(`_divelogs/${slug}.html`, content);
   }
   console.log(`✅ Generated ${dives.length} dive log detail pages in _divelogs/`);
 
@@ -344,83 +258,8 @@ author_profile: false
   // Generate individual certification detail pages
   fs.mkdirSync('_certifications', { recursive: true });
   for (const cert of certifications) {
-    const slug = cert.slug?.current || cert._id;
-    const title = cert.title || 'Opleiding';
-    const imageHtml = cert.imageUrl
-      ? `<img src="${cert.imageUrl}" alt="${title}" class="certification-detail__image">`
-      : `<img src="/assets/images/logo-duikteam-best.png" alt="${title}" class="certification-detail__image certification-detail__image--placeholder">`;
-    const levelHtml = cert.level
-      ? `<span class="certification-detail__level">${cert.level}</span>`
-      : '';
-    const descHtml = cert.descriptionHTML || '<p>Meer informatie volgt binnenkort.</p>';
-
-    const fileContent = `---
-layout: single
-title: "${escapeYaml(title)}"
-author_profile: false
----
-
-<div class="certification-detail">
-  <div class="certification-detail__header">
-    ${imageHtml}
-    <div class="certification-detail__meta">
-      ${levelHtml}
-      <h1 class="certification-detail__title">${title}</h1>
-    </div>
-  </div>
-
-  <div class="certification-detail__body">
-    ${descHtml}
-  </div>
-
-  <a href="/opleidingen/" class="btn btn--inverse">&larr; Terug naar opleidingen</a>
-</div>
-
-<style>
-.certification-detail {
-  max-width: 800px;
-  margin: 0 auto;
-}
-.certification-detail__header {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-.certification-detail__image {
-  width: 240px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-.certification-detail__image--placeholder {
-  object-fit: contain;
-  padding: 1rem;
-  background: #f5f5f5;
-}
-.certification-detail__meta {
-  flex: 1;
-}
-.certification-detail__level {
-  display: inline-block;
-  background: #0077b6;
-  color: white;
-  padding: 0.3rem 0.8rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  margin-bottom: 0.75rem;
-}
-.certification-detail__title {
-  margin-top: 0.5rem;
-}
-.certification-detail__body p {
-  line-height: 1.7;
-}
-</style>
-`;
-    fs.writeFileSync(`_certifications/${slug}.html`, fileContent);
+    const { slug, content } = renderCertificationDetail(cert);
+    fs.writeFileSync(`_certifications/${slug}.html`, content);
   }
   console.log(`✅ Generated ${certifications.length} certification detail pages in _certifications/`);
 }
