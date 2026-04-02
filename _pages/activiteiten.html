@@ -36,6 +36,13 @@ author_profile: false
                 </div>
                 <div class="activity-card__content">
                   <h3 class="activity-card__title">{{ activity.title }}</h3>
+                  {% assign activity_time = activity.date | date: "%H:%M" %}
+                  {% if activity_time != "00:00" %}
+                    <div class="activity-card__time">
+                      <i class="fas fa-clock"></i>
+                      <span>{{ activity_time }}</span>
+                    </div>
+                  {% endif %}
                   {% if activity.location %}
                     <div class="activity-card__location">
                       <i class="fas fa-map-marker-alt"></i>
