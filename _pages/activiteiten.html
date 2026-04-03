@@ -18,9 +18,9 @@ author_profile: false
   <div class="activities-timeline">
     {% for group in grouped_sorted %}
       {% assign month_num = group.items[0].date | date: "%-m" | minus: 1 %}
+      {% assign month_year = group.items[0].date | date: "%Y" %}
       {% assign month_nl = nl_months_long[month_num] %}
-      {% assign month_label = month_nl | append: " " | append: group.items[0].date | date: "%Y" | downcase %}
-      {% assign month_label_cap = month_nl | capitalize | append: " " | append: group.items[0].date | date: "%Y" %}
+      {% assign month_label_cap = month_nl | capitalize | append: " " | append: month_year %}
       <section class="activities-month">
         <h2 class="activities-month__heading">
           <span class="activities-month__label">{{ month_label_cap }}</span>
