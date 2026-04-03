@@ -1,11 +1,14 @@
+import {UsersIcon} from '@sanity/icons'
+
 export default {
-  name: 'page',
+  name: 'membershipPage',
   type: 'document',
-  title: 'Page',
+  title: 'Lid Worden',
+  icon: UsersIcon,
   fields: [
-    { name: 'title', type: 'string', title: 'Title' },
-    { name: 'slug', type: 'slug', title: 'Slug', options: { source: 'title', maxLength: 200 } },
-    { name: 'body', type: 'array', title: 'Body', of: [
+    { name: 'title', type: 'string', title: 'Titel' },
+    { name: 'heroImage', type: 'image', title: 'Hero afbeelding', options: { hotspot: true } },
+    { name: 'body', type: 'array', title: 'Inhoud', of: [
       { type: 'block' },
       { type: 'image', options: { hotspot: true }, fields: [
         { name: 'caption', type: 'string', title: 'Bijschrift' },
@@ -17,7 +20,6 @@ export default {
         ], layout: 'radio' }, initialValue: 'center' },
       ]},
     ]},
-    { name: 'mainImage', type: 'image', title: 'Main Image' }
   ],
-  preview: { select: { title: 'title', media: 'mainImage' } }
+  preview: { select: { title: 'title' } },
 }

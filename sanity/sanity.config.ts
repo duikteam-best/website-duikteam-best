@@ -3,9 +3,9 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {googleMapsInput} from '@sanity/google-maps-input'
 import {schemaTypes} from './schemaTypes'
-import {HomeIcon, StarIcon, StarFilledIcon, InfoOutlineIcon, ActivityIcon, CalendarIcon} from '@sanity/icons'
+import {HomeIcon, StarIcon, StarFilledIcon, InfoOutlineIcon, ActivityIcon, CalendarIcon, UsersIcon} from '@sanity/icons'
 
-const singletonTypes = new Set(['homePage', 'aboutUs', 'certifications', 'certification', 'divelogsOverview'])
+const singletonTypes = new Set(['homePage', 'aboutUs', 'membershipPage', 'certifications', 'certification', 'divelogsOverview'])
 
 export default defineConfig({
   name: 'default',
@@ -88,6 +88,16 @@ export default defineConfig({
                     S.divider(),
                     S.documentTypeListItem('dive').title('Duiklogs'),
                   ]),
+              ),
+            S.listItem()
+              .title('Lid Worden')
+              .id('membershipPage')
+              .icon(UsersIcon)
+              .child(
+                S.document()
+                  .schemaType('membershipPage')
+                  .documentId('membership-page')
+                  .title('Lid Worden'),
               ),
             S.listItem()
               .title('Activiteiten')

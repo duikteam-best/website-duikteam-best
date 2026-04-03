@@ -161,6 +161,25 @@ async function fetchHomePage() {
   return item;
 }
 
+async function fetchMembershipPage() {
+  const query = `*[_id == "membership-page"][0]`;
+  const url = `https://${projectId}.api.sanity.io/v2023-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  const json = await res.json();
+  const item = json.result;
+  if (!item) {
+    console.log('⚠️  No membership-page document found in Sanity');
+    return null;
+  }
+  if (item.heroImage) {
+    item.heroImageUrl = getImageUrl(item.heroImage);
+  }
+  if (item.body) {
+    item.bodyHTML = portableTextToHTML(item.body);
+  }
+  return item;
+}
+
 async function fetchAboutUs() {
   const query = `*[_id == "about-us"][0]`;
   const url = `https://${projectId}.api.sanity.io/v2023-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
@@ -269,6 +288,12 @@ async function main() {
   if (aboutUs) {
     fs.writeFileSync('_data/about_us.json', JSON.stringify(aboutUs, null, 2));
     console.log('✅ Fetched about-us singleton from Sanity!');
+  }
+
+  const membershipPage = await fetchMembershipPage();
+  if (membershipPage) {
+    fs.writeFileSync('_data/membership_page.json', JSON.stringify(membershipPage, null, 2));
+    console.log('✅ Fetched membership-page singleton from Sanity!');
   }
 
   const certificationsOverview = await fetchCertificationsOverview();
