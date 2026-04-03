@@ -9,6 +9,16 @@ const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET;
 const token = process.env.SANITY_TOKEN;
 
+// Convert a UTC datetime string to Europe/Amsterdam local time (no UTC offset suffix)
+// so that Jekyll's Liquid date filter displays the correct local time.
+function toAmsterdamTime(dateStr) {
+  if (!dateStr) return dateStr;
+  const date = new Date(dateStr);
+  // sv-SE locale produces an ISO-like string: "YYYY-MM-DD HH:MM:SS"
+  const local = date.toLocaleString('sv-SE', { timeZone: 'Europe/Amsterdam' });
+  return local.replace(' ', 'T');
+}
+
 // helper to convert Sanity images to URL
 function getImageUrl(image) {
   if (!image || !image.asset || !image.asset._ref) return null;
@@ -209,6 +219,9 @@ async function fetchActivities() {
   const json = await res.json();
 
   return json.result.map(item => {
+    if (item.date) {
+      item.date = toAmsterdamTime(item.date);
+    }
     if (item.featuredImage) {
       item.featuredImage = {
         url: getImageUrl(item.featuredImage),
