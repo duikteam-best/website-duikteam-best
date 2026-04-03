@@ -1,0 +1,28 @@
+---
+layout: default
+---
+
+{% assign page_data = site.data[page.sanity_data] %}
+
+{% if page_data.heroImageUrl %}
+  <div class="page__hero page__hero--overlay"
+    style="background-image: url('{{ page_data.heroImageUrl }}');">
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        {{ page_data.title | default: page.title }}
+      </h1>
+    </div>
+  </div>
+{% endif %}
+
+<div id="main" role="main">
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <section class="page__content cf" itemprop="text">
+      {% if page_data.bodyHTML %}
+        {{ page_data.bodyHTML }}
+      {% else %}
+        {{ content }}
+      {% endif %}
+    </section>
+  </article>
+</div>
