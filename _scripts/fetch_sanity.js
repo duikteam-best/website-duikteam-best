@@ -67,6 +67,138 @@ function portableTextToHTML(blocks) {
   });
 }
 
+function htmlToText(html) {
+  if (!html) return '';
+  return html
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'item';
+}
+
+function buildSearchDoc({ title, sourceUrl, body }) {
+  return `---\nlayout: single\ntitle: ${JSON.stringify(title || '')}\nsearch: true\n---\n\nBron: ${sourceUrl || ''}\n\n${body || ''}\n`;
+}
+
+function writeSanitySearchDocs({
+  homePage,
+  aboutUs,
+  membershipPage,
+  certificationsOverview,
+  divelogsOverview,
+  contactPage,
+  activities,
+  dives,
+  certifications,
+}) {
+  const outDir = '_sanity_search';
+  fs.mkdirSync(outDir, { recursive: true });
+
+  const singletonDocs = [
+    {
+      file: 'home-page.md',
+      title: homePage?.title || 'Home',
+      sourceUrl: '/',
+      body: htmlToText(homePage?.bodyHTML),
+    },
+    {
+      file: 'over-ons.md',
+      title: aboutUs?.title || 'Over ons',
+      sourceUrl: '/over-ons/',
+      body: htmlToText(aboutUs?.bodyHTML),
+    },
+    {
+      file: 'lid-worden.md',
+      title: membershipPage?.title || 'Lid worden',
+      sourceUrl: '/lid-worden/',
+      body: htmlToText(membershipPage?.bodyHTML),
+    },
+    {
+      file: 'opleidingen-overzicht.md',
+      title: certificationsOverview?.title || 'Opleidingen',
+      sourceUrl: '/opleidingen/',
+      body: htmlToText(certificationsOverview?.bodyHTML),
+    },
+    {
+      file: 'duiklogs-overzicht.md',
+      title: divelogsOverview?.title || 'Duiklogs',
+      sourceUrl: '/duiklogs/',
+      body: htmlToText(divelogsOverview?.bodyHTML),
+    },
+    {
+      file: 'contact.md',
+      title: contactPage?.title || 'Contact',
+      sourceUrl: '/contact/',
+      body: htmlToText(contactPage?.bodyHTML),
+    },
+  ];
+
+  for (const doc of singletonDocs) {
+    if (!doc.body) continue;
+    fs.writeFileSync(`${outDir}/${doc.file}`, buildSearchDoc(doc));
+  }
+
+  for (const activity of activities || []) {
+    const title = activity.title || activity.name || 'Activiteit';
+    const body = [
+      activity.subtitle,
+      activity.location,
+      activity.date,
+      htmlToText(activity.descriptionHTML || ''),
+      htmlToText(activity.bodyHTML || ''),
+    ].filter(Boolean).join('\n\n');
+    if (!body) continue;
+    const slug = slugify(activity.slug?.current || activity._id || title);
+    fs.writeFileSync(
+      `${outDir}/activity-${slug}.md`,
+      buildSearchDoc({ title, sourceUrl: '/activiteiten/', body })
+    );
+  }
+
+  for (const dive of dives || []) {
+    const title = dive.title || dive.name || 'Duik';
+    const body = [
+      dive.location,
+      dive.date,
+      htmlToText(dive.descriptionHTML || ''),
+    ].filter(Boolean).join('\n\n');
+    if (!body) continue;
+    const slug = slugify(dive.slug?.current || dive._id || title);
+    fs.writeFileSync(
+      `${outDir}/dive-${slug}.md`,
+      buildSearchDoc({ title, sourceUrl: `/duiklogs/${slug}/`, body })
+    );
+  }
+
+  for (const cert of certifications || []) {
+    const title = cert.title || 'Opleiding';
+    const body = [
+      cert.level,
+      htmlToText(cert.descriptionHTML || ''),
+    ].filter(Boolean).join('\n\n');
+    if (!body) continue;
+    const slug = slugify(cert.slug?.current || cert._id || title);
+    fs.writeFileSync(
+      `${outDir}/certification-${slug}.md`,
+      buildSearchDoc({ title, sourceUrl: `/opleidingen/${slug}/`, body })
+    );
+  }
+}
+
 async function fetchType(type) {
   const query = `*[_type=="${type}"]`;
   const url = `https://${projectId}.api.sanity.io/v2023-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
@@ -345,6 +477,19 @@ async function main() {
   const activities = await fetchActivities();
   fs.writeFileSync('_data/activities.json', JSON.stringify(activities, null, 2));
   console.log(`✅ Fetched ${activities.length} activities from Sanity!`);
+
+  writeSanitySearchDocs({
+    homePage,
+    aboutUs,
+    membershipPage,
+    certificationsOverview,
+    divelogsOverview,
+    contactPage,
+    activities,
+    dives,
+    certifications,
+  });
+  console.log('✅ Generated hidden search index documents in _sanity_search/');
 }
 
 main();
