@@ -7,6 +7,7 @@ export default {
   icon: EnvelopeIcon,
   fields: [
     { name: 'title', type: 'string', title: 'Titel' },
+    { name: 'heroImage', type: 'image', title: 'Hero afbeelding', options: { hotspot: true } },
     { name: 'body', type: 'array', title: 'Inhoud', of: [
       { type: 'block' },
       { type: 'image', options: { hotspot: true }, fields: [
