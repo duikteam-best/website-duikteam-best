@@ -234,6 +234,22 @@ async function fetchCertifications() {
   });
 }
 
+async function fetchContactPage() {
+  const query = `*[_id == "contact-page"][0]`;
+  const url = `https://${projectId}.api.sanity.io/v2023-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  const json = await res.json();
+  const item = json.result;
+  if (!item) {
+    console.log('⚠️  No contact-page document found in Sanity');
+    return null;
+  }
+  if (item.body) {
+    item.bodyHTML = portableTextToHTML(item.body);
+  }
+  return item;
+}
+
 async function fetchActivities() {
   const query = `*[_type == "activity"] | order(date asc)`;
   const url = `https://${projectId}.api.sanity.io/v2023-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`;
@@ -316,6 +332,12 @@ async function main() {
     fs.writeFileSync(`_certifications/${slug}.html`, content);
   }
   console.log(`✅ Generated ${certifications.length} certification detail pages in _certifications/`);
+
+  const contactPage = await fetchContactPage();
+  if (contactPage) {
+    fs.writeFileSync('_data/contact_page.json', JSON.stringify(contactPage, null, 2));
+    console.log('✅ Fetched contact-page singleton from Sanity!');
+  }
 
   const activities = await fetchActivities();
   fs.writeFileSync('_data/activities.json', JSON.stringify(activities, null, 2));

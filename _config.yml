@@ -57,6 +57,9 @@ footer:
       icon: "fab fa-fw fa-github"
       url: "https://github.com/"
 
+after_footer_scripts:
+  - https://web3forms.com/client/script.js
+
 # Build settings
 theme: minimal-mistakes-jekyll
 

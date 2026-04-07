@@ -1,0 +1,21 @@
+---
+title: Contact
+layout: single
+permalink: /contact/
+classes: wide
+---
+
+{% if site.data.contact_page.bodyHTML %}
+<div class="contact-intro">
+  {{ site.data.contact_page.bodyHTML }}
+</div>
+{% endif %}
+
+<form action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="00e1d7e1-2043-463e-8cd9-b5216b12062b">
+  <input type="text" name="name" required>
+  <input type="email" name="email" required>
+  <textarea name="message" required></textarea>
+  <button type="submit">Versturen</button>
+  <div class="h-captcha" data-captcha="true"></div>
+</form>
